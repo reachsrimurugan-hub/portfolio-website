@@ -171,15 +171,15 @@ const Contact = () => {
             <h3>Connect with me</h3>
             <div className="links-wrapper">
               <a href="https://www.linkedin.com/in/srimurugan-s-00835a37a/" target="_blank" rel="noopener noreferrer" className="social-link">
-                <img src="/LinkedIn.png" alt="LinkedIn icon" className="social-link-icon" />
+                <img src="/images/LinkedIn.png" alt="LinkedIn icon" className="social-link-icon" />
                 <span className="social-link-text">LinkedIn</span>
               </a>
               <a href="https://github.com/reachsrimurugan-hub" target="_blank" rel="noopener noreferrer" className="social-link">
-                <img src="/GitHub.png" alt="GitHub icon" className="social-link-icon" />
+                <img src="/images/GitHub.png" alt="GitHub icon" className="social-link-icon" />
                 <span className="social-link-text">GitHub</span>
               </a>
               <a href="https://mail.google.com/mail/u/0/#compose" target="_blank" rel="noopener noreferrer" className="social-link">
-                <img src="/Email.png" alt="Email icon" className="social-link-icon" />
+                <img src="/images/Email.png" alt="Email icon" className="social-link-icon" />
                 <span className="social-link-text">Email</span>
               </a>
             </div>

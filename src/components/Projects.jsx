@@ -7,10 +7,10 @@ const Projects = () => {
   const projects = [
     {
       title: "Revivo Podcast Website",
-      screenshot: "/Podcast List.png",
+      screenshot: "/images/podcast-list.png",
       screenshots: [
-        "/Podcast List.png",
-        "public/Podcast Details.png"
+        "/images/podcast-list.png",
+        "/images/podcast-details.png"
       ],
       description: "A premium web platform designed to present and promote podcast content through a clean and engaging interface. Features include episode listing, audio player integration, and responsive design.",
       techStack: ["React", "CSS3", "HTML5", "Vite", "SwiperJs"],
@@ -72,14 +72,24 @@ const Projects = () => {
     return () => clearInterval(interval);
   }, [activeProject]);
 
+  // Prevent scrolling when modal is open
+  useEffect(() => {
+    if (activeProject) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [activeProject]);
+
   const openModal = (project) => {
     setActiveProject(project);
-    document.body.style.overflow = 'hidden'; // Prevent scrolling
   };
 
   const closeModal = () => {
     setActiveProject(null);
-    document.body.style.overflow = 'auto'; // Restore scrolling
   };
 
   return (

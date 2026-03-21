@@ -8,7 +8,7 @@ const timelineData = [
     date: "2024 - 2027",
     details: "Currently pursuing degree in Cognitive Systems.",
     // Replace with actual image path
-    image: "public/education_cert.png",
+    image: "/images/logo.png",
     certDescription: "Degree Certificate in B.s.c Computer Science"
   },
   {
@@ -18,7 +18,7 @@ const timelineData = [
     date: "December 2024 - January 2025",
     details: "Completed Full Stack Web Development Intern at CODTECH.",
     // Replace with actual image path
-    image: "public/Fullstack.png",
+    image: "/images/fullstack.png",
     certDescription: "Internship Certificate from CODTECH IT SOLUTIONS"
   },
   {
@@ -28,7 +28,7 @@ const timelineData = [
     date: "April 2026 - May 2026",
     details: "Got an offer letter for the frontend developer intern position at Rezilyence.",
     // Replace with actual image path
-    image: "public/Rezilyens.png",
+    image: "/images/rezilyens.png",
     certDescription: "Offer Letter / Intern Certificate from Rezilyence"
   }
 ];

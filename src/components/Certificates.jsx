@@ -8,25 +8,25 @@ const Certificates = () => {
       title: "System Administration and IT Infrastructure Services",
       issuer: "Google",
       description: "Utilize systems administartion knowledge to plan and improve processes of IT environments.",
-      image: "public/System.png"
+      image: "/images/system.png"
     },
     {
       title: "Foundations of Devops and Git",
       issuer: "packt",
       description: "The fundamental principles of DevOps and Git.",
-      image: "public/Devops.png"
+      image: "/images/devops.png"
     },
     {
       title: "AWS Cloud Technical Essentials",
       issuer: "Amazon Web Services",
       description: "fundamental-level understanding of the AWS Cloud.",
-      image: "public/AWS.png"
+      image: "/images/aws.png"
     },
     {
       title: "Introduction To Operating Systems",
       issuer: "NPTEL",
       description: "fundamental-level understanding of the Operating Systems.",
-      image: "public/Nptel.png"
+      image: "/images/nptel.png"
       
     }
   ];
@@ -89,7 +89,7 @@ const Certificates = () => {
               style={{
                 width: '100%',
                 height: '300px',
-                objectFit: 'center',
+                objectFit: 'contain',
                 borderRadius: '0',
                 marginBottom: '0.75rem',
                 border: 'none',
