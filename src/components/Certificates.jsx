@@ -5,6 +5,12 @@ const Certificates = () => {
 
   const certificates = [
     {
+      title: "Developing Frontend Apps with React",
+      issuer: "Coursera",
+      description: "Learn to build responsive and interactive user interfaces using React.",
+      image: "/images/react.png"
+    },
+    {
       title: "System Administration and IT Infrastructure Services",
       issuer: "Google",
       description: "Utilize systems administartion knowledge to plan and improve processes of IT environments.",
@@ -27,7 +33,7 @@ const Certificates = () => {
       issuer: "NPTEL",
       description: "fundamental-level understanding of the Operating Systems.",
       image: "/images/nptel.png"
-      
+
     }
   ];
 
