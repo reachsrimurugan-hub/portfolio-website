@@ -8,7 +8,7 @@ const timelineData = [
     date: "2024 - 2027",
     details: "Currently pursuing degree in Cognitive Systems.",
     // Replace with actual image path
-    image: "/images/logo.png",
+    image: "",
     certDescription: "Degree Certificate in B.s.c Computer Science"
   },
   {

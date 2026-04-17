@@ -16,30 +16,6 @@ const Projects = () => {
       techStack: ["React", "CSS3", "HTML5", "Vite", "SwiperJs"],
       githubLink: "https://github.com/reachsrimurugan-hub/REVIVO-PODCAST-WEBSITE.git",
       liveDemo: "https://github.com/reachsrimurugan-hub/REVIVO-PODCAST-WEBSITE.git" // Placeholder
-    },
-    {
-      title: "Task Management App",
-      screenshot: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=1000&auto=format&fit=crop",
-      screenshots: [
-        "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=1000&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1540350394557-8d14678e7f91?q=80&w=1000&auto=format&fit=crop"
-      ],
-      description: "A full-stack task management application with drag-and-drop features, priority settings, and real-time collaboration. Helps teams stay organized and productive.",
-      techStack: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
-      githubLink: "#",
-      liveDemo: "#"
-    },
-    {
-      title: "E-Commerce Dashboard",
-      screenshot: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop",
-      screenshots: [
-        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop"
-      ],
-      description: "Comprehensive analytics dashboard for e-commerce platforms. Visualize sales trends, customer behavior, and inventory management with interactive charts and reports.",
-      techStack: ["React", "Chart.js", "Firebase", "Styled Components"],
-      githubLink: "#",
-      liveDemo: "#"
     }
   ];
 

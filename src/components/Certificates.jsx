@@ -43,18 +43,31 @@ const Certificates = () => {
 
     let rafId;
     let speed = 0.25; // px per frame
+    let isMobile = window.innerWidth <= 768;
+
+    const handleResize = () => {
+      isMobile = window.innerWidth <= 768;
+    };
+    window.addEventListener('resize', handleResize);
+
     let frame = () => {
       if (!scroller) return;
-      scroller.scrollLeft += speed;
-      if (scroller.scrollLeft >= scroller.scrollWidth - scroller.clientWidth) {
-        scroller.scrollLeft = 0;
+
+      if (!isMobile) {
+        scroller.scrollLeft += speed;
+        if (scroller.scrollLeft >= scroller.scrollWidth - scroller.clientWidth) {
+          scroller.scrollLeft = 0;
+        }
       }
       rafId = requestAnimationFrame(frame);
     };
 
     rafId = requestAnimationFrame(frame);
 
-    return () => cancelAnimationFrame(rafId);
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (
