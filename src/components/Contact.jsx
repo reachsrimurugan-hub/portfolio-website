@@ -1,196 +1,129 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Contact.css';
 
-const Toast = ({ message, type, onClose }) => {
-  useEffect(() => {
-    const timer = setTimeout(onClose, 3000);
-    return () => clearTimeout(timer);
-  }, [onClose]);
-
-  return (
-    <div className={`toast toast-${type}`}>
-      <span>{message}</span>
-      <button onClick={onClose} aria-label="Close">&times;</button>
-    </div>
-  );
-};
-
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [errors, setErrors] = useState({});
-  const [toasts, setToasts] = useState([]);
-
-  const validateField = (name, value) => {
-    let error = '';
-    if (name === 'name' && !value.trim()) error = 'Name is required.';
-    if (name === 'email') {
-      if (!value.trim()) error = 'Email is required.';
-      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) error = 'Please enter a valid email address.';
-    }
-    if (name === 'message' && !value.trim()) error = 'Message is required.';
-    return error;
-  };
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-
-    if (errors[name] !== undefined) {
-      setErrors({ ...errors, [name]: validateField(name, value) });
-    }
-  };
-
-  const handleBlur = (e) => {
-    const { name, value } = e.target;
-    setErrors({ ...errors, [name]: validateField(name, value) });
-  };
-
-  const addToast = (message, type) => {
-    const id = Date.now();
-    setToasts((prev) => [...prev, { id, message, type }]);
-  };
-
-  const removeToast = (id) => {
-    setToasts((prev) => prev.filter(toast => toast.id !== id));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const newErrors = {
-      name: validateField('name', formData.name),
-      email: validateField('email', formData.email),
-      message: validateField('message', formData.message)
-    };
-
-    setErrors(newErrors);
-
-    const hasErrors = Object.values(newErrors).some(err => err);
-
-    if (hasErrors) {
-      addToast('Please fix the errors in the form.', 'error');
-      return;
-    }
-
-    addToast('gotcha! I will get back to you soon.', 'success');
-    setFormData({ name: '', email: '', message: '' });
-    setErrors({});
+    alert('Message sent successfully!');
+    setFormData({ name: '', email: '', phone: '', message: '' });
   };
 
   return (
-    <section id="contact" className="section contact-section">
-      <h2 className="section-title">Get In Touch</h2>
-      <div className="contact-container">
-        {/* Message Section on Left */}
-        <div className="contact-left">
-          <form className="contact-form" onSubmit={handleSubmit} noValidate>
-            <div className={`animated-field ${errors.name ? 'has-error' : ''}`}>
+    <section id="contact" className="section contact-section-new">
+      <h2 className="section-title-new">
+        <span style={{ color: 'var(--text-main)' }}>Get In </span><span style={{ color: 'var(--text-muted)' }}>Touch</span>
+      </h2>
+
+      <div className="contact-grid-new">
+
+        {/* Left Column: Form */}
+        <div className="contact-form-side">
+          <form className="contact-form-new" onSubmit={handleSubmit}>
+            <div className="form-group-new">
               <input
                 type="text"
-                id="name"
                 name="name"
+                placeholder="Fullname"
                 value={formData.name}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 required
               />
-              <label htmlFor="name">Name</label>
-              {errors.name && <span className="error-msg">{errors.name}</span>}
             </div>
-            <div className={`animated-field ${errors.email ? 'has-error' : ''}`}>
+            <div className="form-group-new">
               <input
                 type="email"
-                id="email"
                 name="email"
+                placeholder="Email Address"
                 value={formData.email}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 required
               />
-              <label htmlFor="email">Email</label>
-              {errors.email && <span className="error-msg">{errors.email}</span>}
             </div>
-            <div className={`animated-field ${errors.message ? 'has-error' : ''}`}>
+            <div className="form-group-new">
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Phone"
+                value={formData.phone}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group-new">
               <textarea
-                id="message"
                 name="message"
-                rows="5"
+                rows="1"
+                placeholder="Enter messages"
                 value={formData.message}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 required
               ></textarea>
-              <label htmlFor="message">Drop a Line</label>
-              {errors.message && <span className="error-msg">{errors.message}</span>}
             </div>
-            <button type="submit" className="submit-btn submit-btn-animated">Send a Email </button>
+            <button type="submit" className="send-btn-new">Send a Email &rarr;</button>
           </form>
         </div>
 
-        {/* Info & Contact Links on Right */}
-        <div className="contact-right">
-          <div className="contact-info-container">
-            <h3 style={{ marginBottom: '1.5rem' }}>Let's Connect</h3>
-            <div className="info-list">
-              {/* Email Address */}
-              <div className="info-item">
-                <div className="info-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                    <polyline points="22,6 12,13 2,6" />
-                  </svg>
-                </div>
-                <span className="info-text">reach.srimurugan@gmail.com</span>
-              </div>
-
-              {/* Location */}
-              <div className="info-item">
-                <div className="info-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                </div>
-                <span className="info-text">Coimbatore, Tamil Nadu</span>
-              </div>
-
-              {/* Internship Status */}
-              <div className="info-item">
-                <div className="info-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-                  </svg>
-                </div>
-                <span className="info-text">Available for internships</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="social-links" style={{ marginTop: '0' }}>
-            <h3>Connect with me</h3>
-            <div className="links-wrapper">
-              <a href="https://www.linkedin.com/in/srimurugan-s-00835a37a/" target="_blank" rel="noopener noreferrer" className="social-link">
-                <img src="/images/LinkedIn.png" alt="LinkedIn icon" className="social-link-icon" />
-                <span className="social-link-text">LinkedIn</span>
-              </a>
-              <a href="https://github.com/reachsrimurugan-hub" target="_blank" rel="noopener noreferrer" className="social-link">
-                <img src="/images/GitHub.png" alt="GitHub icon" className="social-link-icon" />
-                <span className="social-link-text">GitHub</span>
-              </a>
-              <a href="https://mail.google.com/mail/u/0/#compose" target="_blank" rel="noopener noreferrer" className="social-link">
-                <img src="/images/Email.png" alt="Email icon" className="social-link-icon" />
-                <span className="social-link-text">Email</span>
-              </a>
-            </div>
-          </div>
+        {/* Center Column: Image */}
+        <div className="contact-image-side">
+          {/* Please place your robot illustration image at this path in the public folder */}
+          <img src="/images/contact1.png" alt="Contact Illustration" className="contact-illustration" />
         </div>
-      </div>
 
-      <div className="toast-container">
-        {toasts.map(toast => (
-          <Toast key={toast.id} message={toast.message} type={toast.type} onClose={() => removeToast(toast.id)} />
-        ))}
+        {/* Right Column: Info */}
+        <div className="contact-info-side">
+
+          <a href="https://www.linkedin.com/in/srimurugan-s-00835a37a/" target="_blank" rel="noopener noreferrer" className="info-item-new" style={{ textDecoration: 'none', cursor: 'pointer' }}>
+            <div className="info-icon-new">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                <rect x="2" y="9" width="4" height="12" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="4" cy="4" r="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <div className="info-text-new" style={{ transition: 'color 0.2s', color: 'var(--text-main)' }} onMouseOver={(e) => e.target.style.color = 'var(--primary-hover)'} onMouseOut={(e) => e.target.style.color = 'var(--text-main)'}>LinkedIn Profile</div>
+          </a>
+
+          <div className="info-divider"></div>
+
+          <a href="https://github.com/reachsrimurugan-hub" target="_blank" rel="noopener noreferrer" className="info-item-new" style={{ textDecoration: 'none', cursor: 'pointer' }}>
+            <div className="info-icon-new">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="none">
+                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+              </svg>
+            </div>
+            <div className="info-text-new" style={{ transition: 'color 0.2s', color: 'var(--text-main)' }} onMouseOver={(e) => e.target.style.color = 'var(--primary-hover)'} onMouseOut={(e) => e.target.style.color = 'var(--text-main)'}>GitHub Profile</div>
+          </a>
+
+          <div className="info-divider"></div>
+
+          <div className="info-item-new">
+            <div className="info-icon-new">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+              </svg>
+            </div>
+            <div className="info-text-new">Coimbatore, Tamilnadu</div>
+          </div>
+
+          <div className="info-divider"></div>
+
+          <div className="info-item-new">
+            <div className="info-icon-new">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+              </svg>
+            </div>
+            <div className="info-text-new">reach.srimurugan@gmail.com</div>
+          </div>
+
+        </div>
+
       </div>
     </section>
   );

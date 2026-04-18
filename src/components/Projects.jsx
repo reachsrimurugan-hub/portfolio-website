@@ -1,158 +1,112 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import './Projects.css';
 
 const Projects = () => {
-  const [activeProject, setActiveProject] = useState(null);
+  const scrollerRef = useRef(null);
 
   const projects = [
     {
       title: "Revivo Podcast Website",
       screenshot: "/images/podcast-list.png",
-      screenshots: [
-        "/images/podcast-list.png",
-        "/images/podcast-details.png"
-      ],
-      description: "A premium web platform designed to present and promote podcast content through a clean and engaging interface. Features include episode listing, audio player integration, and responsive design.",
-      techStack: ["React", "CSS3", "HTML5", "Vite", "SwiperJs"],
-      githubLink: "https://github.com/reachsrimurugan-hub/REVIVO-PODCAST-WEBSITE.git",
-      liveDemo: "https://github.com/reachsrimurugan-hub/REVIVO-PODCAST-WEBSITE.git" // Placeholder
+      githubLink: "https://github.com/reachsrimurugan-hub/REVIVO-PODCAST-WEBSITE.git"
     }
   ];
 
-  const scrollContainer = useRef(null);
-
-  const scrollLeft = () => {
-    if (scrollContainer.current) {
-      scrollContainer.current.scrollBy({ left: -400, behavior: 'smooth' });
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollContainer.current) {
-      scrollContainer.current.scrollBy({ left: 400, behavior: 'smooth' });
-    }
-  };
-
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (scrollContainer.current && !activeProject) {
-        const { scrollLeft, scrollWidth, clientWidth } = scrollContainer.current;
-        if (scrollLeft + clientWidth >= scrollWidth - 10) {
-          scrollContainer.current.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-          scrollContainer.current.scrollBy({ left: 400, behavior: 'smooth' });
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+
+    let rafId;
+    let speed = 0.25; // px per frame
+    let isMobile = window.innerWidth <= 768;
+
+    const handleResize = () => {
+      isMobile = window.innerWidth <= 768;
+    };
+    window.addEventListener('resize', handleResize);
+
+    let frame = () => {
+      if (!scroller) return;
+
+      if (!isMobile) {
+        scroller.scrollLeft += speed;
+        // Reset to 0 when it hits the end
+        if (scroller.scrollLeft >= scroller.scrollWidth - scroller.clientWidth) {
+          scroller.scrollLeft = 0;
         }
       }
-    }, 6000);
-
-    return () => clearInterval(interval);
-  }, [activeProject]);
-
-  // Prevent scrolling when modal is open
-  useEffect(() => {
-    if (activeProject) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-    return () => {
-      document.body.style.overflow = 'auto';
+      rafId = requestAnimationFrame(frame);
     };
-  }, [activeProject]);
 
-  const openModal = (project) => {
-    setActiveProject(project);
-  };
+    rafId = requestAnimationFrame(frame);
 
-  const closeModal = () => {
-    setActiveProject(null);
-  };
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
-    <section id="projects" className="section projects-section">
-      <h2 className="section-title">Featured Projects</h2>
-
-      <div style={{ position: 'relative' }}>
-        <button className="scroll-btn left" onClick={scrollLeft}>&#8249;</button>
-
-        <div ref={scrollContainer} className="projects-scroll-container">
-          {projects.map((project, index) => (
-            <div
-              key={index}
-              className="project-flip-card"
-              onClick={() => openModal(project)}
-            >
-              <div className="project-flip-card-inner">
-                {/* Front Side */}
-                <div className="project-flip-card-front">
-                  <div className="project-image-wrapper">
-                    <img src={project.screenshot} alt={project.title} />
-                    <div className="project-overlay">
-                      <h3>{project.title}</h3>
-                      <p>Hover to see stack</p>
-                      <span className="click-to-see">Click for details</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Back Side */}
-                <div className="project-flip-card-back">
-                  <h3>Tech Stack</h3>
-                  <div className="tech-stack">
-                    {project.techStack.map((tech, i) => (
-                      <span key={i} className="tech-badge">{tech}</span>
-                    ))}
-                  </div>
-                  <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{project.description.substring(0, 80)}...</p>
-                  <button className="view-details-btn">View Full Details</button>
-                </div>
-              </div>
+    <section id="projects" className="section projects-section" style={{ backgroundColor: 'transparent' }}>
+      <h2 className="section-title">
+        <span style={{ color: 'var(--text-main)' }}>Featured </span><span style={{ color: 'var(--text-muted)' }}>Projects</span>
+      </h2>
+      <div
+        ref={scrollerRef}
+        className="projects-carousel"
+        style={{
+          display: 'flex',
+          overflowX: 'auto',
+          scrollBehavior: 'smooth',
+          gap: '2rem',
+          padding: '1rem 0',
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none'
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+        onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+      >
+        {projects.map((project, index) => (
+          <a
+            key={index}
+            href={project.githubLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="card project-card-transparent"
+            aria-label={`View ${project.title} on GitHub`}
+            style={{
+              flex: '0 0 400px',
+              minWidth: '380px',
+              textAlign: 'center',
+              padding: '0',
+              background: 'transparent',
+              boxShadow: 'none',
+              border: 'none',
+              textDecoration: 'none'
+            }}
+          >
+            <img 
+              src={project.screenshot} 
+              alt={`Screenshot of ${project.title}`} 
+              className="project-image-transparent" 
+              loading="lazy" 
+              style={{
+                width: '100%',
+                height: '250px',
+                objectFit: 'cover',
+                borderRadius: '8px',
+                marginBottom: '1rem',
+                border: 'none',
+                background: 'transparent'
+              }}
+            />
+            <div className="project-text-transparent" style={{ textAlign: 'left', color: 'var(--text-main)', fontSize: '0.95rem' }}>
+              <strong style={{ display: 'block', marginBottom: '0.4rem', fontSize: '1.25rem', color: 'var(--text-main)' }}>{project.title}</strong>
+              <small style={{ display: 'block', fontWeight: '600', color: 'var(--primary-color)', fontSize: '0.95rem' }}>View Code &rarr;</small>
             </div>
-          ))}
-        </div>
-
-        <button className="scroll-btn right" onClick={scrollRight}>&#8250;</button>
+          </a>
+        ))}
       </div>
-
-      {/* Project Modal */}
-      {activeProject && (
-        <div className="project-modal-overlay" onClick={closeModal}>
-          <div className="project-modal-container" onClick={(e) => e.stopPropagation()}>
-            <button className="close-modal" onClick={closeModal}>&times;</button>
-
-            <div className="modal-header">
-              <h2>{activeProject.title}</h2>
-              <div className="modal-tech-stack">
-                {activeProject.techStack.map((tech, i) => (
-                  <span key={i} className="tech-badge" style={{ padding: '0.4rem 1rem', fontSize: '0.9rem' }}>{tech}</span>
-                ))}
-              </div>
-            </div>
-
-            <div className="modal-body">
-              <div className="modal-screenshots">
-                {activeProject.screenshots.map((src, i) => (
-                  <img key={i} src={src} alt={`${activeProject.title} screen ${i + 1}`} />
-                ))}
-              </div>
-
-              <div className="modal-content-details">
-                <h3>About the Project</h3>
-                <p className="modal-description">{activeProject.description}</p>
-
-                <div className="modal-actions">
-                  <a href={activeProject.liveDemo} target="_blank" rel="noopener noreferrer" className="modal-btn primary">
-                    Live Demo
-                  </a>
-                  <a href={activeProject.githubLink} target="_blank" rel="noopener noreferrer" className="modal-btn secondary">
-                    GitHub Repo
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 };

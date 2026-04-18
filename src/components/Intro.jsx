@@ -1,11 +1,115 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const Intro = () => {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let animationFrameId;
+
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    const handleResize = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', handleResize);
+
+    let mouse = { x: width / 2, y: height / 2 };
+    const handleMouse = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+    window.addEventListener('mousemove', handleMouse);
+
+
+
+    class Entity {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.3; // Slower speed
+        this.vy = (Math.random() - 0.5) * 0.3;
+        this.color = '#22c55e'; // Subtle neon green
+        this.type = Math.random() > 0.5 ? 'circle' : 'hexagon';
+        this.size = Math.random() * 15 + 8; // Smaller sizes
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotSpeed = (Math.random() - 0.5) * 0.01;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          this.x -= (dx / dist) * 0.10;
+          this.y -= (dy / dist) * 0.10;
+        }
+
+        if (this.x < -this.size) this.x = width + this.size;
+        if (this.x > width + this.size) this.x = -this.size;
+        if (this.y < -this.size) this.y = height + this.size;
+        if (this.y > height + this.size) this.y = -this.size;
+
+        this.rotation += this.rotSpeed;
+      }
+
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = 1.5;
+        ctx.globalAlpha = 0.25; // Minimal opacity
+        
+        ctx.beginPath();
+        if (this.type === 'circle') {
+          ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+        } else if (this.type === 'hexagon') {
+          for (let i = 0; i < 6; i++) {
+            const angle = (Math.PI / 3) * i;
+            if (i === 0) ctx.moveTo(Math.cos(angle) * this.size, Math.sin(angle) * this.size);
+            else ctx.lineTo(Math.cos(angle) * this.size, Math.sin(angle) * this.size);
+          }
+          ctx.closePath();
+        }
+        ctx.stroke();
+        
+        ctx.restore();
+      }
+    }
+
+    // Fewer entities for a cleaner, minimal interface
+    const entities = Array.from({ length: 12 }, () => new Entity());
+
+    const render = () => {
+      ctx.clearRect(0, 0, width, height);
+      entities.forEach(ent => {
+        ent.update();
+        ent.draw();
+      });
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    render();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', handleMouse);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
   const roles = [
-    "Computer Science Student",
     "Full Stack Developer",
-    "UI/UX Enthusiast",
-    "Creative Problem Solver"
+    "UI/UX Enthusiast"
   ];
 
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
@@ -31,12 +135,26 @@ const Intro = () => {
       id="intro"
       className="section intro-section fade-in"
       onMouseMove={handleMouseMove}
+      style={{ position: 'relative' }}
     >
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 0,
+          pointerEvents: 'none'
+        }}
+      />
       <div className="glow-effect" style={{
-        transform: `translate(${mousePos.x * 2}px, ${mousePos.y * 2}px)`
+        transform: `translate(${mousePos.x * 2}px, ${mousePos.y * 2}px)`,
+        zIndex: 1
       }}></div>
 
-      <div className="intro-content" style={{ transform: `translate(${-mousePos.x}px, ${-mousePos.y}px)` }}>
+      <div className="intro-content" style={{ transform: `translate(${-mousePos.x}px, ${-mousePos.y}px)`, zIndex: 2, position: 'relative' }}>
         <h1 className="name-title">Hi, I'm <span className="highlight">Sri</span></h1>
         <h2 className="role-title">
           <span key={currentRoleIndex} className="carousel-text fade-in-text">
@@ -70,10 +188,10 @@ const Intro = () => {
           </a>
         </div>
       </div>
-      <div className="intro-image-container slide-in" style={{ transform: `translate(${mousePos.x}px, ${mousePos.y}px)` }}>
+      <div className="intro-image-container slide-in" style={{ transform: `translate(${mousePos.x}px, ${mousePos.y}px)`, zIndex: 2, position: 'relative' }}>
         {/* Profile Image replacing JD placeholder */}
         <div className="profile-placeholder" style={{
-          boxShadow: `${-mousePos.x}px ${-mousePos.y}px 25px -5px rgba(37, 99, 235, 0.3)`,
+          boxShadow: `${-mousePos.x}px ${-mousePos.y}px 25px -5px rgba(34, 197, 94, 0.45)`,
           overflow: 'hidden',
           background: 'transparent'
         }}>

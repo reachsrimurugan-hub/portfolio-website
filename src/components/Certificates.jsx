@@ -72,7 +72,9 @@ const Certificates = () => {
 
   return (
     <section id="certificates" className="section certificates-section">
-      <h2 className="section-title">Certificates & Badges</h2>
+      <h2 className="section-title">
+        <span style={{ color: 'var(--text-main)' }}>Certificates & </span><span style={{ color: 'var(--text-muted)' }}>Badges</span>
+      </h2>
       <div
         ref={scrollerRef}
         className="certificate-carousel"
@@ -80,7 +82,7 @@ const Certificates = () => {
           display: 'flex',
           overflowX: 'auto',
           scrollBehavior: 'smooth',
-          gap: '1rem',
+          gap: '2rem',
           padding: '1rem 0',
           WebkitOverflowScrolling: 'touch',
           scrollbarWidth: 'none'
@@ -96,7 +98,7 @@ const Certificates = () => {
               flex: '0 0 400px',
               minWidth: '380px',
               textAlign: 'center',
-              padding: '0.5rem',
+              padding: '0',
               background: 'transparent',
               boxShadow: 'none',
               border: 'none'
@@ -107,18 +109,18 @@ const Certificates = () => {
               alt={`${cert.title} Certificate`}
               style={{
                 width: '100%',
-                height: '300px',
+                height: 'auto',
+                maxHeight: '350px',
                 objectFit: 'contain',
-                borderRadius: '0',
-                marginBottom: '0.75rem',
+                borderRadius: '8px',
+                marginBottom: '1rem',
                 border: 'none',
                 background: 'transparent'
               }}
             />
-            <div style={{ textAlign: 'left', color: 'var(--text-color, #fff)', fontSize: '0.9rem' }}>
-              <strong style={{ display: 'block', marginBottom: '0.25rem' }}>{cert.title}</strong>
-              <small style={{ display: 'block', opacity: 0.8 }}>{cert.issuer}</small>
-              <p style={{ marginTop: '0.5rem', fontSize: '0.85rem', opacity: 0.9 }}>{cert.description}</p>
+            <div style={{ textAlign: 'left', color: 'var(--text-main)', fontSize: '0.95rem' }}>
+              <strong style={{ display: 'block', marginBottom: '0.4rem', fontSize: '1.25rem', color: 'var(--text-main)' }}>{cert.title}</strong>
+              <small style={{ display: 'block', fontWeight: '600', color: 'var(--primary-color)', fontSize: '0.95rem' }}>{cert.issuer}</small>
             </div>
           </div>
         ))}
